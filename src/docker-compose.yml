@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+	nginx:
+		build: ./requirements/nginx
+	wordpress:
+		build: ./requirements/wordpress
+	mariadb:
+		build: ./requirements/mariadb
+
+volumes:
+	wp_db_data:
+	wp_site_data:
+
+networks:
+	inception:
