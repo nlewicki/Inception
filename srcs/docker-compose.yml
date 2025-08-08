@@ -2,19 +2,35 @@ version: "3.9"
 
 services:
   nginx:
-    build: ./requirements/nginx
+    build: ./requirements/nginx #baut nginx aus lokalen Dockerfile
     ports:	#ports gehoeren zu service, nicht zu netzwerk
-    - "8080:80"
+    - "8080:80" #localhost:8080, container:80
+
   wordpress:
-    build: ./requirements/wordpress
+    build: ./requirements/wordpress #Wordpress-container
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+    volumes:
+      - wp_site_data:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+
   mariadb:
-    build: ./requirements/mariadb
+    build: ./requirements/mariadb #mariadb-container
 
 volumes:
-  wp_db_data:
-  wp_site_data:
+  wp_db_data: #persistent speicher fuer mariadb daten
+  wp_site_data: #persistent speicher fuer wordpress dateien
 
 networks:
-  inception:
+  inception: #damit container sich unterienander erreichen koennen
 
 #yml erlaubt keine tabs, nur leerzeichen
+#persistent speicher = daten bleiben auch nach neustart (externer Speicher)
+
+#zum starten: docker-compose -f srcs/docker-compose.yml up --build
