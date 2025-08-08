@@ -1,12 +1,13 @@
 FROM debian:bullseye
 
+#installieren Php (quasi vorstufe zu html)
 RUN apt-get update && apt-get install -y \
     php php-fpm php-mysql curl wget unzip less mariadb-client \
     && apt-get clean
 
 # Erstelle WordPress-Verzeichnis
 RUN mkdir -p /var/www/html
-
+# Arbeitsverzeichnis fuer folgende Befehle wird gesetzt
 WORKDIR /var/www/html
 
 # Lade WordPress herunter und entpacke es

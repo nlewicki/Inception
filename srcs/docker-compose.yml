@@ -22,6 +22,15 @@ services:
 
   mariadb:
     build: ./requirements/mariadb #mariadb-container
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - wp_db_data:/var/lib/mysql
+    networks:
+      - inception
 
 volumes:
   wp_db_data: #persistent speicher fuer mariadb daten
