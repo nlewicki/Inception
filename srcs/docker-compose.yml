@@ -1,10 +1,14 @@
-version: "3.9"
-
 services:
   nginx:
     build: ./requirements/nginx #baut nginx aus lokalen Dockerfile
     ports:	#ports gehoeren zu service, nicht zu netzwerk
-    - "8080:80" #localhost:8080, container:80
+    - "443:443" #localhost:443, container:443
+    volumes:
+      - wp_site_data:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - wordpress
 
   wordpress:
     build: ./requirements/wordpress #Wordpress-container
