@@ -37,7 +37,7 @@ services:
       - inception
     depends_on:
       - mariadb
-    #  - redis
+      - redis
 
   mariadb:
     image: mariadb
@@ -52,12 +52,12 @@ services:
     networks:
       - inception
 
-  #redis: #caching server: stores frequently accessed data in memory to speed up wordpress response time
-  #  image: redis
-  #  build: ./requirements/bonus/redis
-  #  networks:
-  #    - main
-  #  restart: always
+  redis: #caching server: stores frequently accessed data in memory to speed up wordpress response time
+    image: redis
+    build: ./requirements/bonus/redis
+    networks:
+      - inception
+    restart: always
 
   #ftp: #allows file uploading to the wp-sites dir
   #  image: ftp
@@ -76,14 +76,14 @@ services:
   #    - main
   #  restart: always
 
-  #static-site: #small busybox httpd webserver that serves static html page
-  #  image: static-site
-  #  build: ./requirements/bonus/static-site
-  #  ports:
-  #    - "8080:8080"
-  #  networks:
-  #    - main
-  #  restart: always
+  static-site: #small busybox httpd webserver that serves static html page
+    image: static-site
+    build: ./requirements/bonus/static-site
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    restart: always
 
   #adminer: #web interface to manage mariadb db
   #  image: adminer

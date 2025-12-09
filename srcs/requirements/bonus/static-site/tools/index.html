@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #222a68, #0b1020);
+            color: #f9fafb;
+        }
+
+        .container {
+            text-align: center;
+            padding: 24px 32px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            max-width: 480px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #a5b4fc;
+        }
+
+        .quote {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            margin: 16px 0 8px;
+        }
+
+        .author {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            margin-bottom: 18px;
+        }
+
+        .divider {
+            width: 40px;
+            height: 2px;
+            background: #6366f1;
+            margin: 8px auto 12px;
+            border-radius: 999px;
+        }
+
+        button {
+            background: #6366f1;
+            border: none;
+            color: #f9fafb;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+            font-size: 0.95rem;
+        }
+
+        button:hover {
+            background: #4f46e5;
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.45);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .hint {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">Daily Quote</div>
+    <div class="divider"></div>
+
+    <div id="quote" class="quote">
+        “Sometimes the smallest step in the right direction ends up being the biggest step of your life.”
+    </div>
+    <div id="author" class="author">
+        – Unknown
+    </div>
+
+    <button onclick="showRandomQuote()">New Quote</button>
+
+    <div class="hint">
+        Click the button to get a new quote ✨
+    </div>
+</div>
+
+<script>
+    const quotes = [
+        {
+            text: "Discipline is choosing between what you want now and what you want most.",
+            author: "Abraham Lincoln (attributed)"
+        },
+        {
+            text: "Great things are done by a series of small things brought together.",
+            author: "Vincent van Gogh"
+        },
+        {
+            text: "You don’t have to be great to start, but you have to start to be great.",
+            author: "Zig Ziglar"
+        },
+        {
+            text: "It always seems impossible until it’s done.",
+            author: "Nelson Mandela"
+        },
+        {
+            text: "Focus on being productive instead of busy.",
+            author: "Tim Ferriss"
+        },
+        {
+            text: "Action is the foundational key to all success.",
+            author: "Pablo Picasso"
+        },
+        {
+            text: "Small progress is still progress.",
+            author: "Unknown"
+        },
+        {
+            text: "Your future is created by what you do today, not tomorrow.",
+            author: "Robert Kiyosaki"
+        },
+        {
+            text: "Start where you are. Use what you have. Do what you can.",
+            author: "Arthur Ashe"
+        },
+        {
+            text: "Done is better than perfect.",
+            author: "Sheryl Sandberg"
+        }
+    ];
+
+    function showRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const quote = quotes[randomIndex];
+
+        document.getElementById("quote").textContent = "“" + quote.text + "”";
+        document.getElementById("author").textContent = "– " + quote.author;
+    }
+</script>
+
+</body>
+</html>
