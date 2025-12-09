@@ -1,16 +1,18 @@
-#base 
 FROM debian:bullseye
 
-#aktualisiert pakete & installiert NGINX
-RUN apt-get update && apt-get install -y nginx && apt-get clean
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        nginx \
+        openssl \
+        gettext-base \
+    && rm -rf /var/lib/apt/lists/*
 
-#meine datei ueberschreibt standart datei
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY ./tools/entrypoint-script.sh /entrypoint-script.sh
 
-COPY certs /etc/nginx/certs
+RUN chmod +x /entrypoint-script.sh \
+    && rm -f /etc/nginx/sites-enabled/default
 
-#countainer verwendet port 80 
 EXPOSE 443
 
-#startet websv im vordergrund (daemon off = sagt quasi "Hauptprozess laueft noch"), sonst exited Docker
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/entrypoint-script.sh"]

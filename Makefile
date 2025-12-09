@@ -18,7 +18,13 @@ GID=$(shell id -g)
 #wenn nur "make" wird automatisch "make up" ausgefuehrt
 .DEFAULT_GOAL := up
 
-up:
+build:
+	mkdir -p ~/data/mariadb
+	mkdir -p ~/data/wordpress
+	mkdir -p ~/data/portainer
+	$(COMPOSE) build
+
+up: build
 	@echo "🚀 Starting containers..."
 	@$(COMPOSE) up --build
 
@@ -37,6 +43,8 @@ clean:
 fclean:
 	@echo "🔥 Removing everything including volumes..."
 	@$(COMPOSE) down --rmi all -v
+
+all: up
 
 ps:
 	@$(COMPOSE) ps

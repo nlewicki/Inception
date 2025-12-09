@@ -1,16 +1,16 @@
 FROM debian:bullseye
 
-#installiert MariaDB server 
-RUN apt-get update && apt-get install -y mariadb-server && apt-get clean
+# MariaDB installieren
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends mariadb-server \
+ && rm -rf /var/lib/apt/lists/*
 
-#kopiert das setup-skript ins Image
-COPY tools/mariadb-setup.sh /tmp/
-#macht das skript ausfuehrbar
-RUN chmod +x /tmp/mariadb-setup.sh
+# Config einspielen
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
+# Setup-Skript ins Image kopieren
+COPY tools/entrypoint-script.sh /usr/local/bin/entrypoint-script.sh
+RUN chmod +x /usr/local/bin/entrypoint-script.sh
 
-COPY conf/my.cnf /etc/mysql/my.cnf
-
-#(PID 1). Skript wird aufgerufen, sobald Container startet
-CMD ["/tmp/mariadb-setup.sh"]
+# EntryPoint: unser Setup-Skript (startet am Ende mysqld im Vordergrund)
+ENTRYPOINT ["/usr/local/bin/entrypoint-script.sh"]

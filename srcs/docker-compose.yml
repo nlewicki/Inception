@@ -1,10 +1,12 @@
 services:
   nginx:
-    mage: nginx
+    image: nginx
     build: ./requirements/nginx #baut nginx aus lokalen Dockerfile
     restart: always #restart automatisch in case of a crash
     ports:	#ports gehoeren zu service, nicht zu netzwerk
     - "443:443"  #localhost:443, container:443
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - wp_site_data:/var/www/html
     networks:
@@ -17,35 +19,114 @@ services:
     build: ./requirements/wordpress #Wordpress-container
     restart: always
     environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - DB_HOST=${DB_HOST}
+    secrets:
+      - db_name
+      - db_user
+      - db_password
+      - wp_admin_user
+      - wp_admin_password
+      - wp_admin_email
+      - wp_user
+      - wp_password
+      - wp_email
     volumes:
       - wp_site_data:/var/www/html
     networks:
       - inception
     depends_on:
-    
       - mariadb
+    #  - redis
 
   mariadb:
     image: mariadb
     build: ./requirements/mariadb #mariadb-container
     restart: always
-    environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    secrets:
+      - db_name
+      - db_user
+      - db_password
     volumes:
       - wp_db_data:/var/lib/mysql
     networks:
       - inception
 
+  #redis: #caching server: stores frequently accessed data in memory to speed up wordpress response time
+  #  image: redis
+  #  build: ./requirements/bonus/redis
+  #  networks:
+  #    - main
+  #  restart: always
+
+  #ftp: #allows file uploading to the wp-sites dir
+  #  image: ftp
+  #  build: ./requirements/bonus/ftp
+  #  volumes:
+  #      - wp-sites:/var/www/html
+  #  secrets:
+  #    - ftp_user
+  #    - ftp_password
+  #  ports:
+  #      - "21:21" # is needed for the initial connection and control commands
+  #      - "50000-50100:50000-50100" # is needed to communicate with clients behind firewalls or NAT (passive mode)
+  #  depends_on:
+  #      - wordpress
+  #  networks:
+  #    - main
+  #  restart: always
+
+  #static-site: #small busybox httpd webserver that serves static html page
+  #  image: static-site
+  #  build: ./requirements/bonus/static-site
+  #  ports:
+  #    - "8080:8080"
+  #  networks:
+  #    - main
+  #  restart: always
+
+  #adminer: #web interface to manage mariadb db
+  #  image: adminer
+  #  build: ./requirements/bonus/adminer
+  #  ports:
+  #    - "8081:8081"
+  #  networks:
+  #    - main
+  #  restart: always
+
+  #portainer: #web interface to manage docker
+  #  image: portainer
+  #  build: ./requirements/bonus/portainer
+  #  secrets:
+  #    - portainer_admin_password
+  #  ports:
+  #    - "8082:9000"
+  #  networks:
+  #    - main
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock # provides access to the Docker socket for Portainer to manage Docker resources
+  #    - portainer_data:/data
+  #  restart: always
+
 volumes:
-  wp_db_data: #persistent speicher fuer mariadb daten
-  wp_site_data: #persistent speicher fuer wordpress dateien
+  wp_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/nlewicki/data/mariadb
+  wp_site_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/nlewicki/data/wordpress
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/nlewicki/data/portainer
 
 networks:
   inception: #damit container sich unterienander erreichen koennen
@@ -53,4 +134,28 @@ networks:
 #yml erlaubt keine tabs, nur leerzeichen
 #persistent speicher = daten bleiben auch nach neustart (externer Speicher)
 
-#zum starten: docker-compose -f srcs/docker-compose.yml up --build
+secrets:
+  db_name:
+    file: ../secrets/db_name.txt
+  db_user:
+    file: ../secrets/db_user.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  wp_admin_user:
+    file: ../secrets/wp_admin_user.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+  wp_admin_email:
+    file: ../secrets/wp_admin_email.txt
+  wp_user:
+    file: ../secrets/wp_user.txt
+  wp_password:
+    file: ../secrets/wp_password.txt
+  wp_email:
+    file: ../secrets/wp_email.txt
+  ftp_user:
+    file: ../secrets/ftp_user.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt
+  portainer_admin_password:
+    file: ../secrets/portainer_admin_password.txt
