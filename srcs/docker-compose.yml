@@ -1,9 +1,10 @@
 services:
   nginx:
+    mage: nginx
     build: ./requirements/nginx #baut nginx aus lokalen Dockerfile
+    restart: always #restart automatisch in case of a crash
     ports:	#ports gehoeren zu service, nicht zu netzwerk
     - "443:443"  #localhost:443, container:443
-    - "80:80"
     volumes:
       - wp_site_data:/var/www/html
     networks:
@@ -12,7 +13,9 @@ services:
       - wordpress
 
   wordpress:
+    image: wordpress
     build: ./requirements/wordpress #Wordpress-container
+    restart: always
     environment:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
@@ -23,10 +26,13 @@ services:
     networks:
       - inception
     depends_on:
+    
       - mariadb
 
   mariadb:
+    image: mariadb
     build: ./requirements/mariadb #mariadb-container
+    restart: always
     environment:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
