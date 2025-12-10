@@ -94,19 +94,19 @@ services:
       - inception
     restart: always
 
-  #portainer: #web interface to manage docker
-  #  image: portainer
-  #  build: ./requirements/bonus/portainer
-  #  secrets:
-  #    - portainer_admin_password
-  #  ports:
-  #    - "8082:9000"
-  #  networks:
-  #    - main
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock # provides access to the Docker socket for Portainer to manage Docker resources
-  #    - portainer_data:/data
-  #  restart: always
+  portainer: #web interface to manage docker
+    image: portainer
+    build: ./requirements/bonus/portainer
+    secrets:
+      - portainer_admin_password
+    ports:
+      - "8082:9000"
+    networks:
+      - inception
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # provides access to the Docker socket for Portainer to manage Docker resources
+      - portainer_data:/data
+    restart: always
 
 volumes:
   wp_db_data:
