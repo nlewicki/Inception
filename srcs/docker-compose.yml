@@ -59,22 +59,22 @@ services:
       - inception
     restart: always
 
-  #ftp: #allows file uploading to the wp-sites dir
-  #  image: ftp
-  #  build: ./requirements/bonus/ftp
-  #  volumes:
-  #      - wp-sites:/var/www/html
-  #  secrets:
-  #    - ftp_user
-  #    - ftp_password
-  #  ports:
-  #      - "21:21" # is needed for the initial connection and control commands
-  #      - "50000-50100:50000-50100" # is needed to communicate with clients behind firewalls or NAT (passive mode)
-  #  depends_on:
-  #      - wordpress
-  #  networks:
-  #    - main
-  #  restart: always
+  ftp: #allows file uploading to the wp-sites dir
+    image: ftp
+    build: ./requirements/bonus/ftp
+    volumes:
+        - wp_site_data:/var/www/html
+    secrets:
+      - ftp_user
+      - ftp_password
+    ports:
+        - "21:21" # is needed for the initial connection and control commands
+        - "50000-50100:50000-50100" # is needed to communicate with clients behind firewalls or NAT (passive mode)
+    depends_on:
+        - wordpress
+    networks:
+      - inception
+    restart: always
 
   static-site: #small busybox httpd webserver that serves static html page
     image: static-site

@@ -1,17 +1,16 @@
 FROM debian:bullseye
 
+RUN apt-get update \
+ && apt-get install -y busybox \
+ && rm -rf /var/lib/apt/lists/*
 
-
+# Create directory and copy files
 RUN mkdir -p /var/www/html
 COPY ./tools /var/www/html
 
-CMD ["httpd", "-p", "8080", "-v", "-f", "-h", "/var/www/html"]
+# Expose the port
+EXPOSE 8080
 
-#busybox is a single executable providing a collection of standard Unix tools
-    #It isnt as functional as a typical Linux distribution, but enough for most usecases
-#httpd is a minimal http server
+CMD ["busybox", "httpd", "-f", "-p", "8080", "-h", "/var/www/html"]
 
-
-
-
-komischer error
+# busybox httpd ist ein kleiner webserver, der statische seiten kann
