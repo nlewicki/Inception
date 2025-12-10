@@ -33,9 +33,14 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
     echo "Installiere WordPress..."
     mkdir -p /var/www/html
     cd /var/www/html
-
-    # Core herunterladen
-    wp core download --allow-root
+    
+    # Core nur herunterladen, wenn wp-includes nicht existiert
+    if [ ! -d "/var/www/html/wp-includes" ]; then
+        echo "Lade WordPress-Dateien herunter..."
+        wp core download --allow-root
+    else
+        echo "WordPress-Dateien bereits vorhanden."
+    fi
 
     # wp-config mit DB-Verbindung erstellen
     wp config create \

@@ -13,17 +13,17 @@ if [ ! -f "$SSL_CERT_PATH/nginx-selfsigned.crt" ]; then
         -newkey rsa:2048 \
         -keyout "$SSL_CERT_PATH/nginx-selfsigned.key" \
         -out "$SSL_CERT_PATH/nginx-selfsigned.crt" \
-        -subj "/C=DE/ST=Baden-Wuerttemberg/L=Heilbronn/O=tecker/CN=${DOMAIN_NAME}" \
+        -subj "/C=DE/ST=Baden-Wuerttemberg/L=Heilbronn/O=nlewicki/CN=${DOMAIN_NAME}" \
         2>/dev/null
     
-    echo "✅ SSL certificate generated successfully."
+    echo "SSL certificate generated successfully."
 else
-    echo "✅ Using existing SSL certificate."
+    echo "Using existing SSL certificate."
 fi
 
 # Substitute environment variables in nginx config
-echo "🔧 Substituting environment variables in nginx config..."
+echo "Substituting environment variables in nginx config..."
 envsubst '${DOMAIN_NAME}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
-echo "🚀 Starting nginx..."
+echo "Starting nginx..."
 exec nginx -g "daemon off;"
