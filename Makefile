@@ -58,3 +58,8 @@ logs:
 
 
 .PHONY: setup build up down re clean fclean ps logs
+
+#docker image ls
+
+#docker image ls -f dangling=true
+#docker image prune

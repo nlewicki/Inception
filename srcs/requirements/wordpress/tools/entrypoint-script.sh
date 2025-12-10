@@ -53,7 +53,7 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
     # WordPress installieren + Admin-User anlegen
     wp core install \
         --url="https://${DOMAIN_NAME}" \
-        --title="42-Inception" \
+        --title="Inception" \
         --admin_user="${WP_ADMIN_USER}" \
         --admin_password="${WP_ADMIN_PASSWORD}" \
         --admin_email="${WP_ADMIN_EMAIL}" \
