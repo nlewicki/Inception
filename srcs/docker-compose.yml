@@ -85,14 +85,14 @@ services:
       - inception
     restart: always
 
-  #adminer: #web interface to manage mariadb db
-  #  image: adminer
-  #  build: ./requirements/bonus/adminer
-  #  ports:
-  #    - "8081:8081"
-  #  networks:
-  #    - main
-  #  restart: always
+  adminer: #web interface to manage mariadb db
+    image: adminer
+    build: ./requirements/bonus/adminer
+    ports:
+      - "8081:8081"
+    networks:
+      - inception
+    restart: always
 
   #portainer: #web interface to manage docker
   #  image: portainer
