@@ -46,6 +46,7 @@ fclean:
 	@echo "Removing everything including volumes..."
 	@$(COMPOSE) down --rmi all -v
 	@sudo rm -rf ~/data/mariadb ~/data/wordpress ~/data/portainer
+#@docker system prune -a --force
 	@echo "All data deleted"
 
 all: up
@@ -60,6 +61,6 @@ logs:
 .PHONY: setup build up down re clean fclean ps logs
 
 #docker image ls
-
+# docker system prune -a --force
 #docker image ls -f dangling=true
 #docker image prune

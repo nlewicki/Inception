@@ -2,8 +2,10 @@
 set -eo pipefail
 
 # extract .tar file
-tar -xvzf /portainer.tar.gz
-rm /portainer.tar.gz;
+if [ ! -x "/portainer/portainer" ]; then
+  test -f /portainer.tar.gz
+  tar -xzf /portainer.tar.gz -C /
+fi
 
 if [ ! -f "/data/portainer.db" ]; then
 
