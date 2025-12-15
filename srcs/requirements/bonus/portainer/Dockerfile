@@ -11,4 +11,6 @@ RUN curl -L https://github.com/portainer/portainer/releases/download/2.16.2/port
 COPY ./tools/entrypoint-script.sh /entrypoint-script.sh
 RUN chmod +x ./entrypoint-script.sh
 
+EXPOSE 9000
+
 ENTRYPOINT ["/entrypoint-script.sh"]

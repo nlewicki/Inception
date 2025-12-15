@@ -12,5 +12,7 @@ COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/entrypoint-script.sh /usr/local/bin/entrypoint-script.sh
 RUN chmod +x /usr/local/bin/entrypoint-script.sh
 
+EXPOSE 3306
+
 # EntryPoint: unser Setup-Skript (startet am Ende mysqld im Vordergrund)
 ENTRYPOINT ["/usr/local/bin/entrypoint-script.sh"]
