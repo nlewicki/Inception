@@ -13,25 +13,26 @@ mkdir -p /run/mysqld
 mkdir -p /var/lib/mysql
 chown -R mysql:mysql /run/mysqld /var/lib/mysql
 
-# 1) Check ob Systemdatenbank initialisieren
+# Systemdatenbank initialisieren mit check -  does mysql exist?
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "Initialisiere MariaDB-Systemdatenbank..."
   mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 fi
 
-# 2) Start MariaDB server in background
+# Start MariaDB server background
 if [ ! -f "$INIT_MARK_FILE" ]; then
   echo "Starte temporären MariaDB-Server für Setup..."
   mysqld --user=mysql --datadir=/var/lib/mysql --skip-networking &
   pid="$!"
 
-  # Warten, bis der Server wirklich bereit ist
+  # wait, until server is up
   echo "Warte auf MariaDB..."
   until mariadb-admin ping --silent; do
     sleep 1
   done
   echo "MariaDB läuft, führe Setup-SQL aus..."
 
+# create database and user
   mariadb -u root <<EOF
 CREATE DATABASE IF NOT EXISTS \`$DB_NAME\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
@@ -39,6 +40,7 @@ GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
+  # shutdown temporary server
   echo "Stoppe temporären Server..."
   mariadb-admin shutdown || true
   wait "$pid" || true
@@ -47,5 +49,6 @@ EOF
   echo "Datenbank-Setup abgeschlossen."
 fi
 
+# Start MariaDB as PID 1
 echo "Starte MariaDB im Vordergrund..."
 exec mysqld --user=mysql --datadir=/var/lib/mysql

@@ -8,6 +8,9 @@ COPY ./conf/vsftpd.conf  /etc/vsftpd.conf
 COPY tools/entrypoint-script.sh /entrypoint-script.sh
 RUN chmod +x ./entrypoint-script.sh
 
+EXPOSE 21
+
 ENTRYPOINT ["/entrypoint-script.sh"]
 
 #docker exec -it ftp ls -la /var/www/html zum testen ob file wirklich auf server ist
+# localhost user pw 21

@@ -138,6 +138,13 @@ HTTP should fail:
 
     curl -v http://nlewicki.42.fr/
 
+### redis test:
+
+    docker exec -it wordpress wp redis status --allow-root
+
+    docker exec -it redis redis-cli info stats | egrep "keyspace_hits|keyspace_misses"
+
+
 ## Summary
 
 This project provides a ready-to-use, secure WordPress infrastructure that can be started,

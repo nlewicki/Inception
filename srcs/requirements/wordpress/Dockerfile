@@ -31,5 +31,5 @@ WORKDIR /var/www/html
 # PHP-FPM hört auf Port 9000 (fastcgi_pass wordpress:9000)
 EXPOSE 9000
 
-# Script als EntryPoint (startet am Ende php-fpm7.4 -F)
+# Script als EntryPoint (startet am Ende php-fpm8.2 -F)
 ENTRYPOINT ["/usr/local/bin/entrypoint-script.sh"]

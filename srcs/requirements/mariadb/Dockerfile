@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-# MariaDB installieren
+# MariaDB-server installieren
 RUN apt-get update \
  && apt-get install -y --no-install-recommends mariadb-server \
  && rm -rf /var/lib/apt/lists/*
@@ -12,7 +12,8 @@ COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/entrypoint-script.sh /usr/local/bin/entrypoint-script.sh
 RUN chmod +x /usr/local/bin/entrypoint-script.sh
 
+# standartport for mariadb
 EXPOSE 3306
 
-# EntryPoint: unser Setup-Skript (startet am Ende mysqld im Vordergrund)
+# EntryPoint: launch script first
 ENTRYPOINT ["/usr/local/bin/entrypoint-script.sh"]

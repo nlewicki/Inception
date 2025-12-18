@@ -1,9 +1,10 @@
 server {
-    # SSL configuration
+    # SSL configuration -> nginx listens to 443 (https)
     listen 443 ssl;
     listen [::]:443 ssl;
     server_name ${DOMAIN_NAME};
     
+    # use self signed certificate and only use modern tls
     ssl_certificate /etc/nginx/ssl/nginx-selfsigned.crt;
     ssl_certificate_key /etc/nginx/ssl/nginx-selfsigned.key;
     ssl_protocols TLSv1.3 TLSv1.2;
@@ -24,6 +25,7 @@ server {
         try_files $uri $uri/ /index.php?$args;
     }
     
+    # send request forward to wordpress
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass wordpress:9000;
@@ -31,6 +33,7 @@ server {
         include fastcgi_params;
     }
     
+    # blocks acces to sensible data
     location ~ /\.ht {
         deny all;
     }

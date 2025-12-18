@@ -67,7 +67,7 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
         --user_pass="${WP_PASSWORD}" \
         --allow-root
 
-    # BONUS: Redis-Cache Plugin installieren & konfigurieren
+    # BONUS: Redis-Cache Plugin installieren & konfigurieren (Redis speichert daten zwischen fuer schnelleren access)
     echo "Installiere und aktiviere Redis-Plugin..."
     wp plugin install redis-cache --activate --allow-root
     wp config set WP_REDIS_HOST 'redis' --allow-root

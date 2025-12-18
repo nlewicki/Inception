@@ -25,5 +25,6 @@ fi
 echo "Substituting environment variables in nginx config..."
 envsubst '${DOMAIN_NAME}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
+# Start nginx as PID 1
 echo "Starting nginx..."
 exec nginx -g "daemon off;"
