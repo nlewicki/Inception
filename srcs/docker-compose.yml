@@ -2,6 +2,7 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx #baut nginx aus lokalen Dockerfile
+    image : nginx
     restart: always #restart automatisch in case of a crash
     ports:	#ports gehoeren zu service, nicht zu netzwerk
     - "443:443"  #localhost:443, container:443
@@ -17,6 +18,7 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress #Wordpress-container
+    image : wordpress
     restart: always
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
@@ -42,6 +44,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb #mariadb-container
+    image : mariadb
     restart: always
     secrets:
       - db_name
@@ -55,6 +58,7 @@ services:
   redis: #caching server: stores frequently accessed data in memory to speed up wordpress response time
     container_name: redis
     build: ./requirements/bonus/redis
+    image : redis
     networks:
       - inception
     restart: always
@@ -62,6 +66,7 @@ services:
   ftp: #allows file uploading to the wp-sites dir
     container_name: ftp
     build: ./requirements/bonus/ftp
+    image : ftp
     volumes:
         - wp_site_data:/var/www/html
     secrets:
@@ -79,6 +84,7 @@ services:
   static-site: #small busybox httpd webserver that serves static html page
     container_name: static-site
     build: ./requirements/bonus/static-site
+    image : static-site
     ports:
       - "8080:8080"
     networks:
@@ -88,6 +94,7 @@ services:
   adminer: #web interface to manage mariadb db
     container_name: adminer
     build: ./requirements/bonus/adminer
+    image : adminer
     ports:
       - "8081:8081"
     networks:
@@ -97,6 +104,7 @@ services:
   portainer: #web interface to manage docker
     container_name: portainer
     build: ./requirements/bonus/portainer
+    image : portainer
     secrets:
       - portainer_admin_password
     ports:

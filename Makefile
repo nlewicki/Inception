@@ -24,19 +24,19 @@ setup:
 
 build: setup
 	@echo "Building images..."
-	@$(COMPOSE) build
+	@$(COMPOSE) build --pull=false
 
 up: setup
 	@echo "Starting containers..."
-	@$(COMPOSE) up -d
+	@$(COMPOSE) up -d --pull never
 
 down:
 	@echo "Stopping containers..."
-	@$(COMPOSE) down
+	@$(COMPOSE) down 
 
 re: down
 	@echo "Rebuilding containers..."
-	@$(COMPOSE) up -d --build
+	@$(COMPOSE) up -d --build --pull never
 
 clean:
 	@echo "Removing containers, networks and images..."

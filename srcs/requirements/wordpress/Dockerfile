@@ -1,12 +1,11 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-# PHP + Tools installieren
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-      php7.4-fpm \
-      php7.4-mysql \
-      php7.4-redis \
-      php7.4-cli \
+      php8.2-fpm \
+      php8.2-mysql \
+      php8.2-redis \
+      php8.2-cli \
       mariadb-client \
       curl \
       less \
@@ -20,7 +19,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-
  && chmod +x /usr/local/bin/wp
 
 # PHP-FPM-Konfiguration (www.conf)
-COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
 # WordPress-Setup-Script
 COPY tools/entrypoint-script.sh /usr/local/bin/entrypoint-script.sh
